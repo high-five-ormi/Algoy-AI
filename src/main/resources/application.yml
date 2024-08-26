@@ -1,0 +1,26 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: algoy-ai
+
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+
+  mvc:
+    hidden-method:
+      filter:
+        enabled: true
+
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: mydatabase
+      username: myuser
+      password: mypassword
