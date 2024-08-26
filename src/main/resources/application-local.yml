@@ -19,8 +19,8 @@ spring:
 
   data:
     mongodb:
-      host: 43.203.235.252
+      host: localhost
       port: 27017
-      database: algoy_ai
-      username: algoy_admin
-      password: 0000
+      database: mydatabase
+      username: myuser
+      password: mypassword
