@@ -58,7 +58,7 @@ cmake-build-*/
 out/
 
 #yml파일
-application-local.yml
+src/main/resources/application-local.yml
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
