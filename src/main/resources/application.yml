@@ -19,11 +19,4 @@ spring:
 
   data:
     mongodb:
-      host: 43.203.235.252
-      port: 27017
-      database: algoy_ai
-      username: algoy_admin
-      password: 0000
-    redis:
-      host: localhost
-      port: 6379
+      uri: mongodb://algoy_admin:0000@43.203.235.252:27017/algoy_ai
