@@ -57,6 +57,9 @@ cmake-build-*/
 # IntelliJ
 out/
 
+#yml파일
+src/main/resources/application-local.yml
+
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
@@ -169,6 +172,8 @@ gradle-app.setting
 *.hprof
 
 HELP.md
+
+src/main/resources/application-local.yml
 
 # End of https://www.toptal.com/developers/gitignore/api/gradle,java,intellij
 메모
