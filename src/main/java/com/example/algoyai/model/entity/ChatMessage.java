@@ -2,14 +2,16 @@ package com.example.algoyai.model.entity;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Builder
 @Document(collection = "chat_messages")
 public class ChatMessage {
 

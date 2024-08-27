@@ -9,5 +9,4 @@ public class AlgoyAiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AlgoyAiApplication.class, args);
 	}
-
 }

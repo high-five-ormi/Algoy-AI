@@ -1,8 +1,8 @@
 package com.example.algoyai.service;
 
+import com.example.algoyai.model.dto.ChatMessageDto;
 import com.example.algoyai.model.entity.ChatMessage;
 import com.example.algoyai.repository.ChatMessageRepository;
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
@@ -16,13 +16,9 @@ public class ChatService {
 	private final RedisTemplate<String, Object> redisTemplate;
 	private final ChannelTopic topic;
 
-	public void sendMessage(String username, String content) {
-		ChatMessage chatMessage = new ChatMessage();
-		chatMessage.setUsername(username);
-		chatMessage.setTimestamp(LocalDateTime.now());
-		chatMessage.setContent(content);
+	public void sendMessage(ChatMessageDto chatMessageDto) {
+		ChatMessage chatMessage = chatMessageDto.toEntity();
 		chatMessageRepository.save(chatMessage);
-
-		redisTemplate.convertAndSend(topic.getTopic(), content);
+		redisTemplate.convertAndSend(topic.getTopic(), chatMessageDto.getContent());
 	}
 }
