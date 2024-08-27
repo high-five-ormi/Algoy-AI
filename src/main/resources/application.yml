@@ -24,3 +24,6 @@ spring:
       database: algoy_ai
       username: algoy_admin
       password: 0000
+    redis:
+      host: localhost
+      port: 6379
