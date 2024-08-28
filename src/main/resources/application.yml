@@ -20,3 +20,6 @@ spring:
   data:
     mongodb:
       uri: mongodb://algoy_admin:0000@43.203.235.252:27017/algoy_ai
+
+    websocket:
+      enabled: true
