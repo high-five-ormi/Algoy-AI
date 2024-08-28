@@ -2,6 +2,7 @@ package com.example.algoyai.controller;
 
 import com.example.algoyai.model.dto.ChatMessageDto;
 import com.example.algoyai.service.ChatMessageService;
+import com.example.algoyai.util.ChatDtoConvert;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -28,7 +29,7 @@ public class ChatController {
   @MessageMapping("/chat")
   @SendTo("/topic/messages")
   public ChatMessageDto send(ChatMessageDto messageDto) {
-    return ChatMessageDto.fromEntity(
+    return ChatDtoConvert.fromEntity(
         chatMessageService.saveMessage(messageDto.getUsername(), messageDto.getContent()));
   }
 }
