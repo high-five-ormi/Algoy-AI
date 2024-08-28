@@ -1,5 +1,6 @@
 package com.example.algoyai.service;
 
+import com.example.algoyai.model.dto.ChatMessageDto;
 import com.example.algoyai.model.entity.ChatMessage;
 import com.example.algoyai.repository.ChatMessageRepository;
 import java.time.LocalDateTime;

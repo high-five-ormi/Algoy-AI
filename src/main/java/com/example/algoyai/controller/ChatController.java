@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @author JSW
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/ai")
 public class ChatController {
 
   private final ChatMessageService chatMessageService;

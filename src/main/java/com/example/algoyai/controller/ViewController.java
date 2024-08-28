@@ -2,6 +2,7 @@ package com.example.algoyai.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @author JSW
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * 클라이언트의 요청에 따라 특정 뷰를 반환합니다.
  */
 @Controller
+@RequestMapping("/ai")
 public class ViewController {
 
   /**
