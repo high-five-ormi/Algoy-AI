@@ -1,4 +1,4 @@
-/*package com.example.algoyai.util;
+package com.example.algoyai.util;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,4 +12,4 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<String> handleException(Exception e) {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error: " + e.getMessage());
 	}
-}*/
+}

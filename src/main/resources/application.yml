@@ -19,7 +19,7 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb://algoy_admin:0000@43.203.235.252:27017/algoy_ai
+      uri: mongodb://algoy_admin:0000@43.203.235.252:27017/algoy_ai?authSource=admin
 
 ai:
   api:
