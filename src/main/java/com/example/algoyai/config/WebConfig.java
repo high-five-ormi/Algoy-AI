@@ -13,7 +13,7 @@ public class WebConfig {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/api/**")
+				registry.addMapping("ai/api/**")
 					.allowedOriginPatterns("*")  // 모든 도메인 허용
 					.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 					.allowedHeaders("*")
