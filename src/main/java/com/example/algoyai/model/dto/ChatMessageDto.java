@@ -1,20 +1,18 @@
 package com.example.algoyai.model.dto;
 
-import com.example.algoyai.model.entity.ChatMessage;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-/**
- * @author JSW
- *
- * 채팅 메시지의 데이터 전송 객체(DTO) 클래스입니다.
- */
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Builder
 public class ChatMessageDto {
 	private String id;
-	private String username;
 	private String content;
-	private LocalDateTime createdAt;
+	private String response;
+	private LocalDateTime timestamp;
 }
