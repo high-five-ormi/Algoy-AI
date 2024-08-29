@@ -21,7 +21,7 @@
 
     $('#messages').append('<p><strong>You:</strong> ' + message + '</p>');
 
-    var eventSource = new EventSource('/api/chat/stream?content=' + encodeURIComponent(message));
+    var eventSource = new EventSource('/ai/api/chat/stream?content=' + encodeURIComponent(message));
     var fullResponse = '';
 
     eventSource.onmessage = function(event) {

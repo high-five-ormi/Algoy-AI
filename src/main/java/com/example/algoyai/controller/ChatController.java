@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
 @RestController
-@RequestMapping("/api/chat")
+@RequestMapping("/ai/api/chat")
 public class ChatController {
 
 	private final ChatService chatService;
