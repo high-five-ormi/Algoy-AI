@@ -56,7 +56,7 @@ public class ChatService {
 					.data(chatMessageDto)
 					.build();
 			})
-			.timeout(Duration.ofSeconds(30))
+			.timeout(Duration.ofSeconds(90))
 			.onErrorResume(e -> {
 				System.err.println("Timeout or error occurred: " + e.getMessage());
 				ChatMessageDto errorDto = ChatMessageDto.builder()
