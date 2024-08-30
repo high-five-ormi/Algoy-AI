@@ -1,108 +1,138 @@
 body {
-  font-family: 'Arial', sans-serif;
-  line-height: 1.6;
-  color: #333;
-  background-color: #f4f4f4;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
   margin: 0;
   padding: 20px;
-}
-
-h1 {
-  text-align: center;
-  color: #2c3e50;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 #chat-container {
-  max-width: 800px;
-  margin: 0 auto;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  width: 100%;
+  max-width: 400px;
+  height: 80vh;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  height: 80vh;
+  overflow: hidden;
 }
 
-#messages {
-  flex-grow: 1;
-  overflow-y: auto;
-  padding: 20px;
-  background-color: #ecf0f1;
+.chat-header {
+  background-color: #1e88e5;
+  color: white;
+  padding: 15px;
+  display: flex;
+  align-items: center;
 }
 
-#messages p {
-  background-color: #fff;
-  border-radius: 20px;
-  padding: 15px 20px;
-  margin-bottom: 15px;
-  width: fit-content;
-  max-width: 80%;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  font-size: 16px;
-  line-height: 1.5;
+.chat-header .avatar {
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  overflow: hidden;
 }
 
-#messages p strong {
-  color: #2980b9;
+.chat-header .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.chat-header h1 {
+  margin: 0;
   font-size: 18px;
 }
 
-#messages p:nth-child(even) {
-  margin-left: auto;
-  background-color: #3498db;
-  color: #fff;
+#messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
-#messages p:nth-child(even) strong {
-  color: #ecf0f1;
+#messages p {
+  max-width: 80%;
+  margin-bottom: 15px;
+  padding: 10px 15px;
+  border-radius: 18px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+#messages p:nth-child(even) {
+  background-color: #e6e6e6;
+  color: #333;
+  align-self: flex-end;
+}
+
+#messages p:nth-child(odd) {
+  background-color: #1e88e5;
+  color: white;
+  align-self: flex-start;
 }
 
 .input-area {
+  padding: 15px;
+  background-color: #f0f2f5;
   display: flex;
-  padding: 20px;
-  background-color: #fff;
+  align-items: center;
 }
 
 #user-input {
-  flex-grow: 1;
-  padding: 12px;
-  border: 1px solid #bdc3c7;
-  border-radius: 4px;
-  font-size: 16px;
+  flex: 1;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  outline: none;
+}
+
+#user-input::placeholder {
+  color: #999;
 }
 
 #send-button {
-  padding: 12px 24px;
-  background-color: #2ecc71;
-  color: white;
+  background-color: #1e88e5;
   border: none;
-  border-radius: 4px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
   margin-left: 10px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0; /* 패딩을 제거하여 버튼 크기를 이미지에 맞춤 */
   transition: background-color 0.3s ease;
-  font-size: 16px;
+}
+
+#send-button img {
+  width: 60%; /* 이미지 크기를 버튼 크기에 맞게 조정 */
+  height: 60%; /* 필요에 따라 크기를 조정 */
 }
 
 #send-button:hover {
-  background-color: #27ae60;
+  background-color: #1976d2;
 }
 
 #send-button:disabled {
-  background-color: #95a5a6;
+  background-color: #bdbdbd;
   cursor: not-allowed;
-}
-
-.loading {
-  color: #7f8c8d;
-  font-style: italic;
 }
 
 /* Scrollbar Styling */
 #messages::-webkit-scrollbar {
-  width: 10px;
+  width: 6px;
 }
 
 #messages::-webkit-scrollbar-track {
@@ -110,53 +140,10 @@ h1 {
 }
 
 #messages::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 5px;
+  background: #c1c1c1;
+  border-radius: 3px;
 }
 
 #messages::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-pre {
-  background-color: #f0f0f0;
-  border-radius: 4px;
-  padding: 15px;
-  overflow-x: auto;
-  max-width: 100%;
-  margin: 10px 0;
-}
-
-code {
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 14px;
-}
-
-/* 마크다운 스타일링 */
-#messages p ul, #messages p ol {
-  padding-left: 20px;
-  margin: 10px 0;
-}
-
-#messages p h1, #messages p h2, #messages p h3, #messages p h4, #messages p h5, #messages p h6 {
-  margin-top: 20px;
-  margin-bottom: 10px;
-  color: #2c3e50;
-}
-
-#messages p a {
-  color: #3498db;
-  text-decoration: none;
-}
-
-#messages p a:hover {
-  text-decoration: underline;
-}
-
-#messages p blockquote {
-  border-left: 4px solid #3498db;
-  padding-left: 15px;
-  color: #7f8c8d;
-  font-style: italic;
-  margin: 10px 0;
+  background: #a8a8a8;
 }
