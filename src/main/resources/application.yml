@@ -1,6 +1,9 @@
 server:
   port: 8082
 
+ai-frontend:
+  url: ${WEB_IP}
+
 spring:
   profiles:
     active: default
@@ -26,7 +29,7 @@ spring:
 ai:
   api:
     url: https://kdt-api-function.azurewebsites.net/api/v1/question/sse-streaming
-    key: d4cd1faf-9253-4ef1-ad2d-548cbed5c381
+    key: 9158381d-b009-4891-8982-51a6a8dac707
 
 allenApi:
   url: https://kdt-api-function.azurewebsites.net/api/v1/question?content=
