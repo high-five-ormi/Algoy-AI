@@ -1,6 +1,8 @@
 package com.example.algoyai.model.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,11 +19,16 @@ public class ChatMessage {
 	@Id
 	private String id;
 	private String content;
-	private String response;
+	@Builder.Default
+	private List<String> responses = new ArrayList<>();
 	private LocalDateTime timestamp;
 
 	public ChatMessage appendResponse(String response) {
-		this.response = this.response + "\n" + response; // 응답 누적
-		return this; // 메서드 체이닝을 위해 자신을 반환
+		this.responses.add(response);
+		return this;
+	}
+
+	public String getLastResponse() {
+		return responses.isEmpty() ? "" : responses.get(responses.size() - 1);
 	}
 }
