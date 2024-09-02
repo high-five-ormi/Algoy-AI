@@ -21,7 +21,7 @@ import java.nio.charset.StandardCharsets;
 public class AllenController {
 
     //앨런 api 키 값
-    @Value("${AllenApi.key}")
+    @Value("${allenApi.key}")
     String client_id;
 
     private AllenApiService allenApiService;

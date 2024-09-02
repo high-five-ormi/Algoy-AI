@@ -18,7 +18,7 @@ public class AllenApiService {
     private final HttpURLConnectionEx httpEx;
     private final AllenRepository allenRepository;
 
-    @Value("${AllenApi.url}")
+    @Value("${allenApi.url}")
     String basicUrl;
 
     //api 호출 관련 로직
