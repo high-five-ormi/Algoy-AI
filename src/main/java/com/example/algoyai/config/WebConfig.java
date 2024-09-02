@@ -14,7 +14,7 @@ public class WebConfig {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/ai/**")
-					.allowedOriginPatterns("*")  // 모든 도메인 허용
+					.allowedOrigins("http://localhost:8081")  // 프론트엔드 서버 주소
 					.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 					.allowedHeaders("*")
 					.allowCredentials(true);
