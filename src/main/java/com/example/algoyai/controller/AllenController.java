@@ -20,26 +20,30 @@ import java.nio.charset.StandardCharsets;
 @RequestMapping("/ai/allenapi")
 public class AllenController {
 
-    @Value("32d9ab5a-aeab-4814-81ac-68d7c0bbbb1d")
+    //앨런 api 키 값
+    @Value("${AllenApi.key}")
     String client_id;
 
     private AllenApiService allenApiService;
+    private AllenService allenService;
 
     @Autowired
-    public AllenController(AllenApiService allenApiService) {
+    public AllenController(AllenApiService allenApiService, AllenService allenService) {
         this.allenApiService = allenApiService;
+        this.allenService = allenService;
     }
 
-
     @GetMapping
-    public ResponseEntity<String> allen(@RequestParam String content) throws Exception {
+    public ResponseEntity<String> allen(@RequestParam String userId, String content) throws Exception {
         System.out.printf("controller check");
         try{
             //인코딩 설정해야함
             String new_content = URLEncoder.encode(content, StandardCharsets.UTF_8.toString());
             String response = allenApiService.callApi(new_content, client_id);
             //content와 response 저장하는 로직
-
+            //System.out.println(response);
+            allenService.Save(userId, content, response);
+            //System.out.println("DB 저장 체크");
         return ResponseEntity.ok(response); // 결과를 보여줄 템플릿 이름
         }catch (Exception e) {
 
