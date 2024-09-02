@@ -63,6 +63,11 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Deploy
+        env:
+          WEB_IP: ${{ secrets.WEB_IP }}
+        run: |
+      
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
