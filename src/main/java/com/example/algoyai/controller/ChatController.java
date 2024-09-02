@@ -3,8 +3,8 @@ package com.example.algoyai.controller;
 
 import com.example.algoyai.model.dto.ChatMessageDto;
 import com.example.algoyai.service.ChatService;
+import com.example.algoyai.util.InputSanitizer;
 import org.springframework.http.MediaType;
-import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +22,8 @@ public class ChatController {
 	}
 
 	@GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	public Flux<ServerSentEvent<ChatMessageDto>> streamChatResponse(@RequestParam String content) {
-		return chatService.getChatResponse(content);
+	public Flux<ChatMessageDto> streamChatResponse(@RequestParam String content) {
+		String sanitizedContent = InputSanitizer.sanitize(content);
+		return chatService.getChatResponse(sanitizedContent);
 	}
 }
