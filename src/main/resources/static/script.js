@@ -19,7 +19,6 @@ function sendMessage() {
     currentEventSource.close();
   }
 
-  // 사용자 입력만 HTML 이스케이프 처리
   var escapedMessage = escapeHtml(message);
   $('#messages').append('<p><strong>You:</strong> ' + escapedMessage + '</p>');
   var aiResponseElement = $('<p><strong>AI:</strong> <span class="loading">Thinking...</span></p>').appendTo('#messages');
@@ -31,12 +30,15 @@ function sendMessage() {
 
   currentEventSource.onmessage = function(event) {
     try {
-      console.log('Raw event data:', event.data);
       var jsonResponse = JSON.parse(event.data);
       if (jsonResponse && jsonResponse.data && jsonResponse.data.content) {
         lastResponse = jsonResponse.data.content;
-        // AI 응답은 이스케이프 처리하지 않음
         var parsedMarkdown = marked.parse(lastResponse);
+
+        // 모든 코드 블록을 div로 감싸기
+        parsedMarkdown = parsedMarkdown.replace(/<pre><code([^>]*)>/g, '<div class="code-block-wrapper"><pre><code$1>');
+        parsedMarkdown = parsedMarkdown.replace(/<\/code><\/pre>/g, '</code></pre></div>');
+
         aiResponseElement.html('<strong>AI:</strong> <div class="markdown-body">' + parsedMarkdown + '</div>');
 
         // 코드 블록에 구문 강조 적용
@@ -55,6 +57,9 @@ function sendMessage() {
     $('#send-button').prop('disabled', false);
     if (lastResponse) {
       var parsedMarkdown = marked.parse(lastResponse);
+      // 모든 코드 블록을 div로 감싸기
+      parsedMarkdown = parsedMarkdown.replace(/<pre><code([^>]*)>/g, '<div class="code-block-wrapper"><pre><code$1>');
+      parsedMarkdown = parsedMarkdown.replace(/<\/code><\/pre>/g, '</code></pre></div>');
       aiResponseElement.html('<strong>AI:</strong> <div class="markdown-body">' + parsedMarkdown + '</div>');
     } else {
       aiResponseElement.find('.loading').text('Error occurred. Please try again.');
@@ -65,17 +70,20 @@ function sendMessage() {
     $('#send-button').prop('disabled', false);
     if (lastResponse) {
       var parsedMarkdown = marked.parse(lastResponse);
+      // 모든 코드 블록을 div로 감싸기
+      parsedMarkdown = parsedMarkdown.replace(/<pre><code([^>]*)>/g, '<div class="code-block-wrapper"><pre><code$1>');
+      parsedMarkdown = parsedMarkdown.replace(/<\/code><\/pre>/g, '</code></pre></div>');
       aiResponseElement.html('<strong>AI:</strong> <div class="markdown-body">' + parsedMarkdown + '</div>');
     }
   };
 }
 
-// Allow sending message with Enter key
+// Enter 키로 메시지 전송
 document.getElementById('user-input').addEventListener('keypress', function(event) {
   if (event.key === 'Enter') {
     sendMessage();
   }
 });
 
-// Attach click event to send button
+// 전송 버튼 클릭 이벤트
 document.getElementById('send-button').addEventListener('click', sendMessage);

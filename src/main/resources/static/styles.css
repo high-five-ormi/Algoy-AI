@@ -147,3 +147,27 @@ body {
 #messages::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
 }
+
+.code-block-wrapper {
+  background-color: #f0ffff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  overflow-x: auto;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.code-block-wrapper pre {
+  margin: 0;
+  padding: 10px;
+}
+
+.code-block-wrapper code {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  color: #002d2d;
+}
