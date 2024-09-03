@@ -65,7 +65,7 @@ jobs:
     steps:
       - name: Deploy
         env:
-          WEB_IP: ${{ secrets.WEB_IP }}
+          IP: ${{ secrets.IP }}
         run: |
       
       - name: Download artifact
