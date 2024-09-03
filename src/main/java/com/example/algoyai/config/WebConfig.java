@@ -42,7 +42,7 @@ public class WebConfig {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/ai/**")
-					.allowedOrigins(frontendUrl, frontendUrl + ":8081")  // 프론트엔드 서버 주소
+					.allowedOrigins(frontendUrl, "http://15.165.235.170", "https://15.165.235.170")
 					.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 					.allowedHeaders("*")
 					.allowCredentials(true);
