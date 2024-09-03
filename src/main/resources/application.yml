@@ -2,7 +2,7 @@ server:
   port: 8082
 
 ai-frontend:
-  url: http://localhost:8081
+  url: ${IP}
 
 spring:
   profiles:
