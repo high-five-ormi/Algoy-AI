@@ -42,7 +42,7 @@ public class WebConfig {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/ai/**")
-					.allowedOrigins(frontendUrl, "http://localhost:8081")
+					.allowedOrigins("http://15.165.235.170", "http://15.165.235.170:8081", "http://localhost:8081")
 					.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 					.allowedHeaders("*")
 					.allowCredentials(true);

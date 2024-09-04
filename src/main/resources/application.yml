@@ -1,9 +1,6 @@
 server:
   port: 8082
 
-ai-frontend:
-  url: http://15.165.235.170:8081
-
 spring:
   profiles:
     active: default
