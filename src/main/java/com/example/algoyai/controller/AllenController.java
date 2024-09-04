@@ -33,16 +33,22 @@ public class AllenController {
         this.allenService = allenService;
     }
 
+
     @GetMapping
-    public ResponseEntity<String> allen(@RequestParam String userId, String content) throws Exception {
+    public ResponseEntity<String> allen(@RequestParam String algoyusername, String solvedacusername) throws Exception {
         System.out.printf("controller check");
         try{
+            //solvedAC API 호출하여 문제(Json) 받아옴
+            //solvedAC에서 받아온 문제들을 String으로 변환
+            //앨런에게 질문할 conent 생성
+            String content = allenApiService.sovledacCall(solvedacusername);
+
             //인코딩 설정해야함
-            String new_content = URLEncoder.encode(content, StandardCharsets.UTF_8.toString());
-            String response = allenApiService.callApi(new_content, client_id);
+            //String new_content = URLEncoder.encode(content, StandardCharsets.UTF_8.toString());
+            String response = allenApiService.callApi(content, client_id);
             //content와 response 저장하는 로직
             //System.out.println(response);
-            allenService.Save(userId, content, response);
+            //allenService.Save(algoyusername, content, response);
             //System.out.println("DB 저장 체크");
         return ResponseEntity.ok(response); // 결과를 보여줄 템플릿 이름
         }catch (Exception e) {
