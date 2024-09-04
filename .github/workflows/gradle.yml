@@ -71,9 +71,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-artifacts
+          path: artifacts
 
       - name: List artifact directory
-        run: ls -la build/libs
+        run: ls -la artifacts
 
       - name: Set up SSH key
         run: |
@@ -87,14 +88,14 @@ jobs:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
-          scp -i ~/.ssh/id_rsa build/libs/*.jar $EC2_USER@$EC2_HOST:/home/ubuntu
+          scp -i ~/.ssh/id_rsa artifacts/*.jar $EC2_USER@$EC2_HOST:/home/ubuntu
 
       - name: Set execute permission on jar
         env:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
-          ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST 'chmod +x /home/ubuntu/Algoy-AI-0.0.1-SNAPSHOT.jar'
+          ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST 'chmod +x /home/ubuntu/*.jar'
 
       - name: RUN java app
         env:
@@ -113,6 +114,6 @@ jobs:
             echo "Algoy-AI PID 파일이 존재하지 않습니다. 새로운 프로세스를 시작합니다."
           fi
           
-          ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST 'nohup java -jar /home/ubuntu/Algoy-AI-0.0.1-SNAPSHOT.jar >/dev/null 2>&1 & echo $! > /home/ubuntu/ai-pid'
+          ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST 'nohup java -jar /home/ubuntu/*.jar >/dev/null 2>&1 & echo $! > /home/ubuntu/ai-pid'
           
           ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST 'ps -p $(< /home/ubuntu/ai-pid) && echo "Algoy-AI 프로세스 시작됨" || echo "Algoy-AI 프로세스 시작 실패"'
