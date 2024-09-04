@@ -34,3 +34,6 @@ ai:
 allenApi:
   url: https://kdt-api-function.azurewebsites.net/api/v1/question?content=
   key: 32d9ab5a-aeab-4814-81ac-68d7c0bbbb1d
+
+solvedac:
+  url: https://solved.ac/api/v3/user/top_100?handle=
