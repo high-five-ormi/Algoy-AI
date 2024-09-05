@@ -1,7 +1,7 @@
-package com.example.algoyai.util;
+package com.example.algoyai.util.chatbot;
 
-import com.example.algoyai.model.dto.ChatMessageDto;
-import com.example.algoyai.model.entity.ChatMessage;
+import com.example.algoyai.model.dto.chatbot.ChatMessageDto;
+import com.example.algoyai.model.entity.chatbot.ChatMessage;
 
 /**
  * @author JSW

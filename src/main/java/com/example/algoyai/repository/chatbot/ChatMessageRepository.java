@@ -1,6 +1,6 @@
-package com.example.algoyai.repository;
+package com.example.algoyai.repository.chatbot;
 
-import com.example.algoyai.model.entity.ChatMessage;
+import com.example.algoyai.model.entity.chatbot.ChatMessage;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;
 
