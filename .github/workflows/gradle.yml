@@ -32,7 +32,17 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle Wrapper
-        run: ./gradlew clean build
+        env:
+          ALLOWED_CONNECTION_URL: ${{ secrets.ALLOWED_CONNECTION_URL }}
+          AI_API_URL: ${{ secrets.AI_API_URL }}
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        run: |
+          ./gradlew clean build \
+            -PALLOWED_CONNECTION_URL="$ALLOWED_CONNECTION_URL" \
+            -PAI_API_URL="$AI_API_URL" \
+            -PAI_API_KEY="$AI_API_KEY" \
+            -PMONGODB_URI="$MONGODB_URI"
 
       - name: Debug - List project root
         run: ls -la
@@ -101,6 +111,10 @@ jobs:
         env:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
+          ALLOWED_CONNECTION_URL: ${{ secrets.ALLOWED_CONNECTION_URL }}
+          AI_API_URL: ${{ secrets.AI_API_URL }}
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
         run: |          
           if ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST '[ -f /home/ubuntu/ai-pid ]'; then
             PID=$(ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST 'cat /home/ubuntu/ai-pid')
@@ -114,6 +128,13 @@ jobs:
             echo "Algoy-AI PID 파일이 존재하지 않습니다. 새로운 프로세스를 시작합니다."
           fi
           
-          ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST 'nohup java -jar /home/ubuntu/*.jar >/dev/null 2>&1 & echo $! > /home/ubuntu/ai-pid'
+          ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST "nohup java -jar /home/ubuntu/*.jar \
+            --allowed-connection.url='$ALLOWED_CONNECTION_URL' \
+            --ai.api.url='$AI_API_URL' \
+            --ai.api.key='$AI_API_KEY' \
+            --spring.data.mongodb.uri='$MONGODB_URI' \
+            >/dev/null 2>&1 & echo \$! > /home/ubuntu/ai-pid"
+          
+          ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST 'ps -p $(< /home/ubuntu/ai-pid) && echo "Algoy-AI 프로세스 시작됨" || echo "Algoy-AI 프로세스 시작 실패"'
           
           ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST 'ps -p $(< /home/ubuntu/ai-pid) && echo "Algoy-AI 프로세스 시작됨" || echo "Algoy-AI 프로세스 시작 실패"'
