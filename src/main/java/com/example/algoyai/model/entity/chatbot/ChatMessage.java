@@ -1,4 +1,4 @@
-package com.example.algoyai.model.entity;
+package com.example.algoyai.model.entity.chatbot;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

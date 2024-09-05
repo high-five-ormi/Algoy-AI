@@ -1,11 +1,12 @@
-package com.example.algoyai.service;
+package com.example.algoyai.service.chatbot;
 
-import com.example.algoyai.model.dto.ChatMessageDto;
-import com.example.algoyai.model.entity.ChatMessage;
-import com.example.algoyai.repository.ChatMessageRepository;
-import com.example.algoyai.util.ChatMessageMapper;
+import com.example.algoyai.model.dto.chatbot.ChatMessageDto;
+import com.example.algoyai.model.entity.chatbot.ChatMessage;
+import com.example.algoyai.repository.chatbot.ChatMessageRepository;
+import com.example.algoyai.util.chatbot.ChatMessageMapper;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;

@@ -1,7 +1,7 @@
-package com.example.algoyai.controller;
+package com.example.algoyai.controller.chatbot;
 
-import com.example.algoyai.model.dto.ChatMessageDto;
-import com.example.algoyai.service.ChatService;
+import com.example.algoyai.model.dto.chatbot.ChatMessageDto;
+import com.example.algoyai.service.chatbot.ChatService;
 import com.example.algoyai.util.InputSanitizer;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

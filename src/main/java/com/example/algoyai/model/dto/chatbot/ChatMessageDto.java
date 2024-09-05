@@ -1,4 +1,4 @@
-package com.example.algoyai.model.dto;
+package com.example.algoyai.model.dto.chatbot;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

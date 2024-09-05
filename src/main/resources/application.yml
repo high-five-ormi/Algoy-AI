@@ -1,6 +1,10 @@
 server:
   port: 8082
 
+allowed-connection:
+  url: ${ALLOWED_CONNECTION_URL}
+
+
 spring:
   profiles:
     active: default
@@ -21,12 +25,12 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb://algoy_admin:0000@43.203.235.252:27017/algoy_ai?authSource=admin
+      uri: ${MONGODB_URI}
 
 ai:
   api:
-    url: https://kdt-api-function.azurewebsites.net/api/v1/question/sse-streaming
-    key: f6c2c7c5-d7c8-49c7-bf30-a2a6bdc28548
+    url: ${AI_API_URL}
+    key: ${AI_API_KEY}
 
 allenApi:
   url: https://kdt-api-function.azurewebsites.net/api/v1/question?content=
