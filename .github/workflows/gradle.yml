@@ -109,30 +109,41 @@ jobs:
 
       - name: RUN java app
         env:
-            EC2_USER: ${{ secrets.EC2_USER }}
-            EC2_HOST: ${{ secrets.EC2_HOST }}
-            ALLOWED_CONNECTION_URL: ${{ secrets.ALLOWED_CONNECTION_URL }}
-            AI_API_URL: ${{ secrets.AI_API_URL }}
-            AI_API_KEY: ${{ secrets.AI_API_KEY }}
-            MONGODB_URI: ${{ secrets.MONGODB_URI }}
-        run: |          
-            if ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST '[ -f /home/ubuntu/ai-pid ]'; then
-              PID=$(ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST 'cat /home/ubuntu/ai-pid')
-              if ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST "ps -p $PID > /dev/null"; then
-                echo "Algoy-AI PID 파일이 존재하며, 프로세스가 실행 중입니다. 이전 프로세스를 종료합니다."
-                ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST "kill -9 $PID"
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          ALLOWED_CONNECTION_URL: ${{ secrets.ALLOWED_CONNECTION_URL }}
+          AI_API_URL: ${{ secrets.AI_API_URL }}
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        run: |
+          ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST << EOF
+            if [ -f /home/ubuntu/ai-pid ]; then
+              PID=\$(cat /home/ubuntu/ai-pid)
+              if ps -p \$PID > /dev/null; then
+                echo "Algoy-AI 프로세스가 실행 중입니다. 이전 프로세스를 종료합니다."
+                kill -9 \$PID
               else
-                echo "Algoy-AI PID 파일이 존재하지만 프로세스가 실행 중이지 않습니다. 새로운 프로세스를 시작합니다."
+                echo "Algoy-AI PID 파일이 존재하지만 프로세스가 실행 중이지 않습니다."
               fi
             else
-              echo "Algoy-AI PID 파일이 존재하지 않습니다. 새로운 프로세스를 시작합니다."
+              echo "Algoy-AI PID 파일이 존재하지 않습니다."
             fi
+      
+            cd /home/ubuntu
+            nohup java -jar Algoy-AI-0.0.1-SNAPSHOT.jar \
+              --allowed-connection.url="${ALLOWED_CONNECTION_URL}" \
+              --ai.api.url="${AI_API_URL}" \
+              --ai.api.key="${AI_API_KEY}" \
+              --spring.data.mongodb.uri="${MONGODB_URI}" \
+              > nohup.out 2>&1 &
             
-            ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST "nohup java -jar /home/ubuntu/Algoy-AI-0.0.1-SNAPSHOT.jar \
-              --allowed-connection.url='$ALLOWED_CONNECTION_URL' \
-              --ai.api.url='$AI_API_URL' \
-              --ai.api.key='$AI_API_KEY' \
-              --spring.data.mongodb.uri='$MONGODB_URI' \
-              >/dev/null 2>&1 & echo \$! > /home/ubuntu/ai-pid"
-            
-            ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST 'ps -p $(< /home/ubuntu/ai-pid) && echo "Algoy-AI 프로세스 시작됨" || echo "Algoy-AI 프로세스 시작 실패"'
+            echo \$! > /home/ubuntu/ai-pid
+            sleep 5
+            if ps -p \$(cat /home/ubuntu/ai-pid) > /dev/null; then
+              echo "Algoy-AI 프로세스 시작됨"
+              tail -n 20 nohup.out
+            else
+              echo "Algoy-AI 프로세스 시작 실패"
+              cat nohup.out
+            fi
+          EOF
