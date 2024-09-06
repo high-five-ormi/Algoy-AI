@@ -36,9 +36,11 @@ public class ChatMessage {
 	 * @param response 추가할 응답 내용
 	 * @return 이 ChatMessage 객체 자신을 반환하여 메서드 체이닝을 지원합니다.
 	 */
-	public ChatMessage appendResponse(String response) {
+	public void appendResponse(String response) {
+		if (this.responses == null) {
+			this.responses = new ArrayList<>();
+		}
 		this.responses.add(response);
-		return this;
 	}
 
 	/**
