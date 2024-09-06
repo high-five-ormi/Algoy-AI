@@ -36,13 +36,11 @@ jobs:
           ALLOWED_CONNECTION_URL: ${{ secrets.ALLOWED_CONNECTION_URL }}
           AI_API_URL: ${{ secrets.AI_API_URL }}
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}
         run: |
           ./gradlew clean build \
             -PALLOWED_CONNECTION_URL="$ALLOWED_CONNECTION_URL" \
             -PAI_API_URL="$AI_API_URL" \
-            -PAI_API_KEY="$AI_API_KEY" \
-            -PMONGODB_URI="$MONGODB_URI"
+            -PAI_API_KEY="$AI_API_KEY"
 
       - name: Debug - List project root
         run: ls -la
