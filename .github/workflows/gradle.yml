@@ -30,12 +30,10 @@ jobs:
           AI_API_URL: ${{ secrets.AI_API_URL }}
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
         run: |
-          ./gradlew clean test \
+          ./gradlew clean build test \
             -PALLOWED_CONNECTION_URL="$ALLOWED_CONNECTION_URL" \
             -PAI_API_URL="$AI_API_URL" \
             -PAI_API_KEY="$AI_API_KEY" \
-            -Dspring.mongodb.embedded.version=4.6.1 \
-            -Dspring.data.mongodb.database=testdb \
             --info
 
       - name: Upload build artifacts
