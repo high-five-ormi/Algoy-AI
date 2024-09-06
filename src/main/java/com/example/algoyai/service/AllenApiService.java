@@ -69,7 +69,9 @@ public class AllenApiService {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
 
-        String content = "현재까지 백준에서 푼 문제들을 줄테니 이 문제를 바탕으로 비슷한 수준의 문제를 백준에서 1개 프로그래머스에서 1개 추천해줘.";
+        String content = "현재까지 백준에서 푼 문제들을 줄테니 이 문제를 바탕으로 비슷한 수준의 문제를 백준에서 1문제 추천해줘./n "
+                + "Json String 형식으로 아래처럼 답변해줘. key는 site, title, problemNo, details야";
+
         try{
             //API 응답을 받는다(Json 형태)
             String result = httpEx.get(requestUrl, headers);

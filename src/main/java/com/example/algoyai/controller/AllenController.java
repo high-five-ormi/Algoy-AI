@@ -43,8 +43,6 @@ public class AllenController {
             //앨런에게 질문할 conent 생성
             String content = allenApiService.sovledacCall(solvedacusername);
 
-            //인코딩 설정해야함
-            //String new_content = URLEncoder.encode(content, StandardCharsets.UTF_8.toString());
             String response = allenApiService.callApi(content, client_id);
             //content와 response 저장하는 로직
             //System.out.println(response);
