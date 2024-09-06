@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.test.context.TestPropertySource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -17,6 +18,10 @@ import java.util.Arrays;
  * ChatMessageRepository의 동작을 검증하는 테스트 클래스입니다.
  */
 @DataMongoTest
+@TestPropertySource(properties = {
+    "spring.mongodb.embedded.version=4.6.1",
+    "spring.data.mongodb.database=testdb"
+})
 public class ChatMessageRepositoryTest {
 
   @Autowired private ChatMessageRepository chatMessageRepository;
