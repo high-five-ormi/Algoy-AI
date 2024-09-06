@@ -5,6 +5,3 @@ spring:
   data:
     mongodb:
       database: testdb
-logging:
-  level:
-    org.springframework.data.mongodb.core: DEBUG
