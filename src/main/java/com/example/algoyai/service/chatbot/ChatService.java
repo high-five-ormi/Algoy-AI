@@ -6,7 +6,7 @@ import com.example.algoyai.repository.chatbot.ChatMessageRepository;
 import com.example.algoyai.util.chatbot.ChatMessageMapper;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.concurrent.TimeoutException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -43,14 +43,16 @@ public class ChatService {
     }
 
     /**
-     * 사용자가 입력한 메시지에 대한 AI의 응답을 가져옵니다.
+     * 사용자가 입력한 콘텐츠에 대한 채팅 응답을 Flux<ChatMessageDto> 형식으로 반환합니다.
      *
-     * @param content 사용자가 입력한 메시지 내용.
-     * @return AI의 응답을 포함하는 ChatMessageDto 객체의 Flux 스트림.
+     * @param content 사용자가 입력한 채팅 메시지의 내용.
+     * @return 초기 채팅 메시지를 생성하고, 해당 메시지에 대한 응답 스트림을 반환하는 Flux. 에러 발생 시 handleError 메서드를 통해
+     *         에러를 처리합니다.
      */
     public Flux<ChatMessageDto> getChatResponse(String content) {
         return createInitialChatMessage(content)
-            .flatMapMany(this::streamResponses);
+            .flatMapMany(this::streamResponses)
+            .onErrorResume(this::handleError);
     }
 
     /**
@@ -91,17 +93,22 @@ public class ChatService {
     }
 
     /**
-     * API 호출 중 오류가 발생했을 때 이를 처리하고, 오류 메시지를 반환합니다.
+     * 주어진 에러를 처리하여 Flux<ChatMessageDto> 형식으로 반환합니다.
      *
-     * @param error 발생한 오류.
-     * @return 오류 메시지를 포함하는 ChatMessageDto 객체의 Flux 스트림.
+     * @param error 처리할 Throwable 객체. 이 에러가 TimeoutException일 경우 "Error: Request timed out" 메시지를 생성하고,
+     *              그렇지 않으면 에러 메시지를 포함한 일반적인 에러 응답을 생성합니다.
+     * @return 에러 메시지를 포함한 ChatMessageDto 객체를 담고 있는 Flux. 반환된 객체는 에러 타입을 "error"로 설정하고,
+     *         에러 메시지를 "content" 필드에 포함합니다.
      */
     private Flux<ChatMessageDto> handleError(Throwable error) {
-        System.err.println("Error occurred: " + error.getMessage());
+        String errorMessage = (error instanceof TimeoutException)
+            ? "Error: Request timed out"
+            : "Error: " + error.getMessage();
+
         return Flux.just(ChatMessageDto.builder()
             .type("error")
             .data(ChatMessageDto.ChatResponseData.builder()
-                .content("Error: " + error.getMessage())
+                .content(errorMessage)
                 .build())
             .build());
     }
