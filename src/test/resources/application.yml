@@ -1,4 +1,7 @@
 spring:
   mongodb:
     embedded:
-      version: 4.0.21
+      version: 4.6.1
+  data:
+    mongodb:
+      database: testdb
