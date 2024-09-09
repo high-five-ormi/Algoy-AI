@@ -1,7 +1,7 @@
-package com.example.algoyai.service;
+package com.example.algoyai.service.solvedac;
 
-import com.example.algoyai.model.dto.SolvedACResponse;
-import com.example.algoyai.repository.AllenRepository;
+import com.example.algoyai.model.dto.solvedac.SolvedACResponse;
+import com.example.algoyai.repository.solvedac.AllenRepository;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service

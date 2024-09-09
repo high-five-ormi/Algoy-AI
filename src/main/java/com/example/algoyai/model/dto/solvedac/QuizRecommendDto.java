@@ -1,6 +1,6 @@
-package com.example.algoyai.model.dto;
+package com.example.algoyai.model.dto.solvedac;
 
-import com.example.algoyai.model.entity.QuizRecommend;
+import com.example.algoyai.model.entity.solvedac.QuizRecommend;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 

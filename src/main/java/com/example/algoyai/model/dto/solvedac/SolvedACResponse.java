@@ -1,4 +1,4 @@
-package com.example.algoyai.model.dto;
+package com.example.algoyai.model.dto.solvedac;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
