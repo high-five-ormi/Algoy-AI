@@ -1,8 +1,8 @@
-package com.example.algoyai.service;
+package com.example.algoyai.service.solvedac;
 
-import com.example.algoyai.model.dto.QuizRecommendDto;
-import com.example.algoyai.model.entity.QuizRecommend;
-import com.example.algoyai.repository.AllenRepository;
+import com.example.algoyai.model.dto.solvedac.QuizRecommendDto;
+import com.example.algoyai.model.entity.solvedac.QuizRecommend;
+import com.example.algoyai.repository.solvedac.AllenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

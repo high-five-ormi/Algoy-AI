@@ -1,20 +1,15 @@
-package com.example.algoyai.controller;
+package com.example.algoyai.controller.solvedac;
 
-import com.example.algoyai.service.AllenApiService;
-import com.example.algoyai.service.AllenService;
+import com.example.algoyai.service.solvedac.AllenApiService;
+import com.example.algoyai.service.solvedac.AllenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/ai/allenapi")

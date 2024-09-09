@@ -1,4 +1,4 @@
-package com.example.algoyai.model.entity;
+package com.example.algoyai.model.entity.solvedac;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
