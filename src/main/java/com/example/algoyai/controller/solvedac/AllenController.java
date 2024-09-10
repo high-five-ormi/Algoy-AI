@@ -28,7 +28,6 @@ public class AllenController {
         this.allenService = allenService;
     }
 
-
     @GetMapping
     public ResponseEntity<String> allen(@RequestParam String algoyusername, String solvedacusername) throws Exception {
         //System.out.printf("controller check");
