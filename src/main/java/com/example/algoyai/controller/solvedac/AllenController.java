@@ -31,7 +31,7 @@ public class AllenController {
 
     @GetMapping
     public ResponseEntity<String> allen(@RequestParam String algoyusername, String solvedacusername) throws Exception {
-        System.out.printf("controller check");
+        //System.out.printf("controller check");
         try{
             //solvedAC API 호출하여 문제(Json) 받아옴
             //solvedAC에서 받아온 문제들을 String으로 변환
@@ -46,6 +46,22 @@ public class AllenController {
         return ResponseEntity.ok(response); // 결과를 보여줄 템플릿 이름
         }catch (Exception e) {
 
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("api 호출 중 에러가 발생하였습니다"); // 오류를 보여줄 템플릿 이름
+        }
+
+    }
+
+    @GetMapping("/response")
+    public ResponseEntity<String> fivereponse(@RequestParam String algoyusername, String solvedacusername) throws Exception {
+        System.out.println("controller check2");
+        try {
+            //앨런에게 질문할 conent 생성
+            String content = allenApiService.sovledacResponseCall(solvedacusername);
+
+            String response = allenApiService.callApi(content, client_id);
+            //System.out.println(content);
+            return ResponseEntity.ok(response);
+        }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("api 호출 중 에러가 발생하였습니다"); // 오류를 보여줄 템플릿 이름
         }
 

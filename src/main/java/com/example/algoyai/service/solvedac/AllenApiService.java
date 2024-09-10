@@ -45,7 +45,7 @@ public class AllenApiService {
         try {
             //API 응답을 받는다 (Json 형태)
             String result = httpEx.get(requestUrl, headers);
-            System.out.println(result);
+            //System.out.println(result);
 
             //Json을 파싱하여 content만 반환한다.
             //Gson라이브러리 : Google에서 제공하는 JSON 파싱 라이브러리
@@ -67,13 +67,13 @@ public class AllenApiService {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
 
-        String content = "현재까지 백준에서 푼 문제들을 줄테니 이 문제를 바탕으로 비슷한 수준의 문제를 백준에서 1문제 추천해줘./n "
+        String content = "현재까지 백준에서 푼 문제번호들을 줄테니 이 문제를 바탕으로 비슷한 수준의 문제를 백준에서 1문제 추천해줘./n "
                 + "Json String 형식으로 아래처럼 답변해줘. key는 site, title, problemNo, details야";
 
         try{
             //API 응답을 받는다(Json 형태)
             String result = httpEx.get(requestUrl, headers);
-            System.out.println(result);
+            //System.out.println(result);
 
             content += parseSolvedACTitles(result);
 
@@ -103,19 +103,58 @@ public class AllenApiService {
 
         //결과를 담을 스트링 생성
         String solvedTitles = "";
-
+        //문제 번호를 담을 스트링 생성
+        String solvedProblemId = "";
         //items 배열의 각 요소에서 titles의 title 값을 추출
         for (SolvedACResponse.Item item : response.getItems()){
-            //titles 배열의 각 titles을 추가
-            for(SolvedACResponse.Title title : item.getTitles()){
-                if (title.getTitle() != null){
-                    solvedTitles += title.getTitle(); //user가 푼 문제
-                    solvedTitles += ", ";
-                }
+            if(item.getProblemId() != null){
+                //System.out.println("probelId: " + item.getProblemId());
+                solvedProblemId += item.getProblemId();
+                solvedProblemId += ", ";
             }
+            //titles 배열의 각 titles을 추가
+//            for(SolvedACResponse.Title title : item.getTitles()){
+//                if (title.getTitle() != null){
+//                    solvedTitles += title.getTitle(); //user가 푼 문제
+//                    solvedTitles += ", ";
+//                }
+//            }
         }
-        return solvedTitles;
+        //System.out.println(solvedProblemId);
+        return solvedProblemId;
     }
 
+    //5문제 추천해달라는 요청과 함께 solvedAC 상위 100문제 가져오기(5문제)
+    public String sovledacResponseCall(String userName) throws Exception {
 
+        String requestUrl = solvedAcApi + userName;
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+
+        String content = "현재까지 백준에서 푼 문제번호들을 줄테니 이 문제를 바탕으로 비슷한 수준의 취업을 위한 코딩테스트 문제를 5문제 추천해줘./n "
+                + "Json String 형식으로 아래처럼 답변해줘. key는 site, title, problemNo, details야";
+
+        try{
+            //API 응답을 받는다(Json 형태)
+            String result = httpEx.get(requestUrl, headers);
+
+            content += parseSolvedACTitles(result);
+
+
+            //인코딩 설정해야함
+            //String new_content = URLEncoder.encode(content, StandardCharsets.UTF_8.toString());
+            //String response = callApi(new_content, client_id);
+            //content와 response 저장하는 로직
+            //System.out.println(response);
+            //allenService.Save(algoyusername, content, response);
+            //System.out.println("DB 저장 체크");
+
+
+            return content;
+
+        } catch (Exception e){
+            throw new Exception("solvedAC 호출 실패", e); //예외 발생시 상위로 전달
+        }
+    }
 }

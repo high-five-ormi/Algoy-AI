@@ -26,7 +26,7 @@ public class SolvedACResponse {
     public static class Item {
         //문제 아이디(백준 문제 번호로, 문제마다 고유)
         @SerializedName("problemId")
-        private int problemId;
+        private String problemId;
         //한국어 문제 제목입니다. HTML 엔티티나 LaTeX 수식을 포함할 수 있습니다.
         @SerializedName("titleKo")
         private String titleKo;
@@ -34,6 +34,7 @@ public class SolvedACResponse {
         @SerializedName("titles")
         private List<Title> titles;
 
+        public String getProblemId() { return problemId; }
         public String getTitleKo() {
             return titleKo;
         }
