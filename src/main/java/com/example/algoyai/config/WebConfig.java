@@ -9,8 +9,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * @author JSW
  *
- *     WebConfig 클래스는 Spring MVC 설정을 담당하며, 특히 CORS(Cross-Origin Resource Sharing) 설정을 구성합니다. 이를
- *     통해 프론트엔드 애플리케이션에서 백엔드 API에 접근할 수 있도록 허용합니다.
+ * WebConfig 클래스는 Spring MVC 설정을 담당하며, 특히 CORS(Cross-Origin Resource Sharing) 설정을 구성합니다.
+ * 이를 통해 프론트엔드 애플리케이션에서 백엔드 API에 접근할 수 있도록 허용합니다.
  */
 @Configuration
 public class WebConfig {
@@ -19,8 +19,8 @@ public class WebConfig {
   private String url;
 
   /**
-   * CORS 설정을 위한 WebMvcConfigurer 빈을 생성하는 메서드입니다. 이 메서드는 프론트엔드 애플리케이션이 백엔드 API에 대한 크로스 도메인 요청을 허용하도록
-   * 설정합니다.
+   * CORS 설정을 위한 WebMvcConfigurer 빈을 생성하는 메서드입니다.
+   * 이 메서드는 프론트엔드 애플리케이션이 백엔드 API에 대한 크로스 도메인 요청을 허용하도록 설정합니다.
    *
    * @return WebMvcConfigurer 객체를 반환합니다.
    */
