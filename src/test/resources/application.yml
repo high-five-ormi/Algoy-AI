@@ -1,0 +1,31 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: algoy-ai
+
+  mvc:
+    hidden-method:
+      filter:
+        enabled: true
+
+  mongodb:
+    embedded:
+      version: 4.6.1
+
+  data:
+    mongodb:
+      database: testdb
+
+allowed-connection:
+  url: http://localhost:8081
+
+ai:
+  api:
+    url: https://kdt-api-function.azurewebsites.net/api/v1/question/sse-streaming
+    key: 9158381d-b009-4891-8982-51a6a8dac707
+
+allenApi:
+  url: https://kdt-api-function.azurewebsites.net/api/v1/question?content=
+  key: 32d9ab5a-aeab-4814-81ac-68d7c0bbbb1d

@@ -1,7 +1,13 @@
 server:
   port: 8082
 
+allowed-connection:
+  url: ${ALLOWED_CONNECTION_URL}
+
+
 spring:
+  profiles:
+    active: default
   application:
     name: algoy-ai
 
@@ -19,11 +25,16 @@ spring:
 
   data:
     mongodb:
-      host: 43.203.235.252
-      port: 27017
-      database: algoy_ai
-      username: algoy_admin
-      password: 0000
-    redis:
-      host: localhost
-      port: 6379
+      uri: ${MONGODB_URI}
+
+ai:
+  api:
+    url: ${AI_API_URL}
+    key: ${AI_API_KEY}
+
+allenApi:
+  url: https://kdt-api-function.azurewebsites.net/api/v1/question?content=
+  key: 32d9ab5a-aeab-4814-81ac-68d7c0bbbb1d
+
+solvedac:
+  url: https://solved.ac/api/v3/user/top_100?handle=

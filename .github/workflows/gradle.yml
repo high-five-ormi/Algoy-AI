@@ -1,13 +1,8 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
-
 name: Java CI with Gradle
-#수정 필요
+
 on:
+  push:
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -17,8 +12,15 @@ jobs:
     permissions:
       contents: read
 
+    services:
+      mongodb:
+        image: mongo:4.4
+        ports:
+          - 27017:27017
+
     steps:
       - uses: actions/checkout@v4
+      
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -26,22 +28,36 @@ jobs:
           distribution: 'temurin'
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3.1.0
+        uses: gradle/gradle-build-action@v2
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build with Gradle Wrapper
-        run: ./gradlew clean build
-
-      - name: List build directory
-        run: ls -la build/libs
+      - name: Build and Test with Gradle
+        env:
+          ALLOWED_CONNECTION_URL: ${{ secrets.ALLOWED_CONNECTION_URL }}
+          AI_API_URL: ${{ secrets.AI_API_URL }}
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          SPRING_DATA_MONGODB_URI: mongodb://localhost:27017/testdb
+        run: |
+          ./gradlew clean build test \
+            -PALLOWED_CONNECTION_URL="$ALLOWED_CONNECTION_URL" \
+            -PAI_API_URL="$AI_API_URL" \
+            -PAI_API_KEY="$AI_API_KEY" \
+            --info
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
           name: build-artifacts
           path: build/libs/*.jar
+          if-no-files-found: error
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3
+        if: always() # always run even if the previous step fails
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
 
   dependency-submission:
     runs-on: ubuntu-latest
@@ -67,9 +83,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-artifacts
+          path: artifacts
 
       - name: List artifact directory
-        run: ls -la  # 다운로드한 아티팩트의 디렉토리 내용 확인
+        run: ls -la artifacts
 
       - name: Set up SSH key
         run: |
@@ -83,23 +100,52 @@ jobs:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
-          scp -i ~/.ssh/id_rsa *.jar $EC2_USER@$EC2_HOST:/home/ubuntu
+          scp -i ~/.ssh/id_rsa artifacts/*.jar $EC2_USER@$EC2_HOST:/home/ubuntu
+
+      - name: Set execute permission on jar
+        env:
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+        run: |
+          ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST 'chmod +x /home/ubuntu/*.jar'
 
       - name: RUN java app
         env:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
-        run: |          
-          # Algoy-AI 애플리케이션 관리
-          if ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST '[ -f /home/ubuntu/ai-pid ]'; then
-          echo "Algoy-AI PID 파일이 존재합니다. 이전 프로세스를 종료합니다."
-          ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST 'kill -9 $(< /home/ubuntu/ai-pid)'
-          else
-          echo "Algoy-AI PID 파일이 존재하지 않습니다. 새로운 프로세스를 시작합니다."
-          fi
-          
-          # 새로운 Java 프로세스 시작
-          ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST 'nohup java -jar /home/ubuntu/Algoy-AI-0.0.1-SNAPSHOT.jar >/dev/null 2>&1 & echo $! > /home/ubuntu/ai-pid'
-          
-          # 프로세스가 잘 시작되었는지 확인
-          ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST 'ps -p $(< /home/ubuntu/ai-pid) && echo "Algoy-AI 프로세스 시작됨" || echo "Algoy-AI 프로세스 시작 실패"'
+          ALLOWED_CONNECTION_URL: ${{ secrets.ALLOWED_CONNECTION_URL }}
+          AI_API_URL: ${{ secrets.AI_API_URL }}
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        run: |
+          ssh -i ~/.ssh/id_rsa $EC2_USER@$EC2_HOST << EOF
+            if [ -f /home/ubuntu/ai-pid ]; then
+              PID=$(cat /home/ubuntu/ai-pid)
+              if ps -p $PID > /dev/null; then
+                echo "Algoy-AI 프로세스가 실행 중입니다. 이전 프로세스를 종료합니다."
+                kill -9 $PID
+              else
+                echo "Algoy-AI PID 파일이 존재하지만 프로세스가 실행 중이지 않습니다."
+              fi
+            else
+              echo "Algoy-AI PID 파일이 존재하지 않습니다."
+            fi
+      
+            cd /home/ubuntu
+            nohup java -jar Algoy-AI-0.0.1-SNAPSHOT.jar \
+              --allowed-connection.url="${ALLOWED_CONNECTION_URL}" \
+              --ai.api.url="${AI_API_URL}" \
+              --ai.api.key="${AI_API_KEY}" \
+              --spring.data.mongodb.uri="${MONGODB_URI}" \
+              > nohup.out 2>&1 &
+            
+            echo $! > /home/ubuntu/ai-pid
+            sleep 5
+            if ps -p $(cat /home/ubuntu/ai-pid) > /dev/null; then
+              echo "Algoy-AI 프로세스 시작됨"
+              tail -n 20 nohup.out
+            else
+              echo "Algoy-AI 프로세스 시작 실패"
+              cat nohup.out
+            fi
+          EOF
